@@ -43,7 +43,7 @@ def watermark(
             'c':(width_base//2-width_water//2,height_base//2-height_water),
             'bl':(bias_width,height_base-height_water-bias_height), #
             'bc':(width_base//2-width_water//2,height_base-height_water-bias_height),
-            'bs':(int(width_base/2.2)-width_water//2,height_base-height_water-bias_height),
+            'bcl':(int(width_base/2.2)-width_water//2,height_base-height_water-bias_height),
             'br':(width_base-width_water-bias_width,height_base-height_water-bias_height)}
 
     transparent.paste(watermark, mapper_logo_position[position_logo], mask=watermark)
