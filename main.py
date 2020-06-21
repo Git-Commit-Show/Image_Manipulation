@@ -5,10 +5,23 @@ from docopt import docopt
 usage = '''
 
 Image Manipulation
-Usage:  main.py (-l | --logo) <file> (-p | --position) <position>
+Usage:  main.py (-l <input_file> -p <position>) -o <output_file> [(-t <text>)]
+        main.py (--logo <input_file> --position <position>) --output <output_file>
         main.py (-h | --help)
 
-Positions:
+
+Examples:
+
+    Add a logo of sponsor on the input image
+
+    main.py -l logos/sponsor.png -p bcl -o parth
+    main.py --logo logos/sponsor.png --position bcl --output parth
+
+    Add logo with text
+
+    main.py -l logos/sponsor.png -p bcl -o parth -t GCS2020
+
+Positions - Watermark:
         tl      Top Left Corner
         b       Below Watermark Image
         tc      Top Center
@@ -22,20 +35,40 @@ Positions:
         br      Bottom Right 
         bcl     Bottom Center Left
 
+Positions - Watermark With Text:
+        tl      Top Left Corner
+        tc      Top Center
+        tr      Top Right
+        cl      Center Left
+        c       Center 
+        cr      Center Right
+        bl      Bottom Left
+        bc      Bottom Center
+        br      Bottom Right 
+
 '''
 
+# DEAFULTS
 
-FONT="fonts/Helvetica.ttf"
+INPUT = "input/poster.png"
+DISPLAY = False
+TEXT = ""                               # Let it be empty unless you want text and watermark both
+FONT = "fonts/Helvetica.ttf"
+COLOR = "white"
+TEXT_SIZE = 40
+TEXT_POSITION = "bc"
+TEXT_ALIGN_WATERMARK = "r"              # Text Position wrt Watermark
+
 
 def watermark(
               input_image_path,
               output_image_path,
               watermark_image_path,
               position_logo,
-              text='',
-              color ='black',
-              text_size=40,
-              text_position='r'
+              text=TEXT,
+              color=COLOR,
+              text_size=TEXT_SIZE,
+              text_position=TEXT_ALIGN_WATERMARK
               ):
 
     base_image = Image.open(input_image_path)
@@ -75,16 +108,18 @@ def watermark(
     position_text=mapper_text_position[text_position]
     if(textwidth<width_water):
         mapper_text_position['b'][0]=mapper_logo_position[position_logo][0]+(width_water-textwidth)//2
-    drawing.text(position_text, text, fill=color,font=font)   
-    transparent.show()
+    drawing.text(position_text, text, fill=color,font=font)
+    if DISPLAY:
+        transparent.show()
     transparent.save(output_image_path)
+
 
 def watermark_with_text(input_image_path,
                         output_image_path,
-                        text,
-                        text_position,
-                        color='black',
-                        text_size=40,
+                        text=TEXT,
+                        text_position=TEXT_POSITION,
+                        color=COLOR,
+                        text_size=TEXT_SIZE,
                        ):
 
     base_image = Image.open(input_image_path) 
@@ -112,16 +147,24 @@ def watermark_with_text(input_image_path,
 
 
     drawing.text(mapper_position[text_position], text,fill=color, font=font) 
-    base_image.show()
+    if DISPLAY:
+        base_image.show()
     base_image.save(output_image_path)
 
 
 def main():
     args = docopt(usage, version='Image Manipulation v1')
-    if args['-l' and '-p']:
-        logo = str(args['<file>'])
+    if args['-l' and '-p' and '-o' ]:
+        logo = str(args['<input_file>'])
         position = str(args['<position>'])
-        watermark("input/poster.png", "output/aa.png", logo, position)
+        output = str(args['<output_file>'])
+        output = "output/"+output+".png"
+        if args['-t']:
+            text = str(args['<text>'])
+            watermark(INPUT, output, logo, position, text, color=COLOR, text_size=TEXT_SIZE, text_position=TEXT_ALIGN_WATERMARK)
+        else:
+            watermark(INPUT, output, logo, position)
+
 
 
 
@@ -129,14 +172,6 @@ def main():
 if __name__ == '__main__':
     main()
     '''
-    watermark('poster.png',              # Base Image
-              'out.jpg',       # Output Image Name
-              'wht.png',                 # Watermark Image
-              'bs',
-              color ='white',
-              text_size=55,
-              text_position='b'
-              )      
 
     watermark_with_text('gcs-banner.png',
                        'watermarked_text_output.png',
