@@ -5,7 +5,8 @@ from docopt import docopt
 usage = '''
 
 Image Manipulation
-Usage:  main.py (-l <input_file> -p <position>) -o <output_file> [(-t <text>)]
+Usage:  main.py (-l <input_file> -p <position>) (-o <output_file>) [(-t <text>)]
+        main.py (-i <input_file> -T <text>) (-o <output_file>)
         main.py (--logo <input_file> --position <position>) --output <output_file>
         main.py (-h | --help)
 
@@ -159,6 +160,7 @@ def main():
         position = str(args['<position>'])
         output = str(args['<output_file>'])
         output = "output/"+output+".png"
+
         if args['-t']:
             text = str(args['<text>'])
             watermark(INPUT, output, logo, position, text, color=COLOR, text_size=TEXT_SIZE, text_position=TEXT_ALIGN_WATERMARK)
@@ -166,17 +168,19 @@ def main():
             watermark(INPUT, output, logo, position)
 
 
+    elif args['-i' and '-T' and '-o']:
+        image = str(args['<input_file>'])
+        text = str(args['<text>'])
+        output = str(args['<output_file>'])
+        output = "output/"+output+".png"
 
+        if args['-p']:
+            position = str(args['<position>'])
+            watermark_with_text(image, output, text, position, color=COLOR, text_size=TEXT_SIZE)
+        else:
+            watermark_with_text(image, output, text, text_position=TEXT_POSITION, color=COLOR, text_size=TEXT_SIZE)
 
 
 if __name__ == '__main__':
     main()
-    '''
-
-    watermark_with_text('gcs-banner.png',
-                       'watermarked_text_output.png',
-                       'Invide',
-                        'bc',
-                       text_size=200,color='white')
-    '''
 
