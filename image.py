@@ -1,10 +1,11 @@
 from PIL import Image, ImageDraw, ImageFont
-
+import os
 
 # DEAFULTS
 
 INPUT = "input/poster.png"
 OUTPUT = "output/"
+POSITION='bcl'
 DISPLAY = False
 TEXT = ""                               # Let it be empty unless you want text and watermark both
 FONT = "fonts/Helvetica.ttf"
@@ -104,3 +105,14 @@ def watermark_with_text(input_image_path,
     if DISPLAY:
         base_image.show()
     base_image.save(output_image_path)
+
+def watermark_a_folder(folder_path):
+    global OUTPUT
+    logo_list=os.listdir(folder_path)
+    for i in logo_list:
+        OUTPUT=OUTPUT+'result'+'_'+i
+        watermark(INPUT,OUTPUT,folder_path+i,POSITION)
+        OUTPUT = "output/"
+    
+
+watermark_a_folder('logos/')
