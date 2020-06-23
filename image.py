@@ -4,6 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 # DEAFULTS
 
 INPUT = "input/poster.png"
+OUTPUT = "output/"
 DISPLAY = False
 TEXT = ""                               # Let it be empty unless you want text and watermark both
 FONT = "fonts/Helvetica.ttf"
