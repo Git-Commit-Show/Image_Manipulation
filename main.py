@@ -51,6 +51,7 @@ Positions - Watermark With Text:
 
 
 def main():
+    global OUTPUT
     args = docopt(usage, version='Image Manipulation v1')
     if args['-l' and '-p' and '-o' ]:
         logo = str(args['<input_file>'])
