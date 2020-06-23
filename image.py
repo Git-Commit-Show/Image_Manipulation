@@ -1,18 +1,27 @@
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
+from PIL import Image, ImageDraw, ImageFont
 
-FONT="fonts/Helvetica.ttf"
+
+# DEAFULTS
+
+INPUT = "input/poster.png"
+DISPLAY = False
+TEXT = ""                               # Let it be empty unless you want text and watermark both
+FONT = "fonts/Helvetica.ttf"
+COLOR = "white"
+TEXT_SIZE = 40
+TEXT_POSITION = "bc"
+TEXT_ALIGN_WATERMARK = "r"              # Text Position wrt Watermark
+
 
 def watermark(
               input_image_path,
               output_image_path,
               watermark_image_path,
               position_logo,
-              text='',
-              color ='black',
-              text_size=40,
-              text_position='r'
+              text=TEXT,
+              color=COLOR,
+              text_size=TEXT_SIZE,
+              text_position=TEXT_ALIGN_WATERMARK
               ):
 
     base_image = Image.open(input_image_path)
@@ -52,16 +61,18 @@ def watermark(
     position_text=mapper_text_position[text_position]
     if(textwidth<width_water):
         mapper_text_position['b'][0]=mapper_logo_position[position_logo][0]+(width_water-textwidth)//2
-    drawing.text(position_text, text, fill=color,font=font)   
-    transparent.show()
+    drawing.text(position_text, text, fill=color,font=font)
+    if DISPLAY:
+        transparent.show()
     transparent.save(output_image_path)
+
 
 def watermark_with_text(input_image_path,
                         output_image_path,
-                        text,
-                        text_position,
-                        color='black',
-                        text_size=40,
+                        text=TEXT,
+                        text_position=TEXT_POSITION,
+                        color=COLOR,
+                        text_size=TEXT_SIZE,
                        ):
 
     base_image = Image.open(input_image_path) 
@@ -89,25 +100,6 @@ def watermark_with_text(input_image_path,
 
 
     drawing.text(mapper_position[text_position], text,fill=color, font=font) 
-    base_image.show()
+    if DISPLAY:
+        base_image.show()
     base_image.save(output_image_path)
-
-'''
-if __name__ == '__main__':
-    watermark('poster.png',              # Base Image
-              'out.jpg',       # Output Image Name
-              'wht.png',                 # Watermark Image
-              'bs',
-              color ='white',
-              text_size=55,
-              text_position='b'
-              )      
-
-    watermark_with_text('gcs-banner.png',
-                       'watermarked_text_output.png',
-                       'Invide',
-                        'bc',
-                       text_size=200,color='white')
-'''
-
-
