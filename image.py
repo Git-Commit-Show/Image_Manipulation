@@ -114,5 +114,3 @@ def watermark_a_folder(folder_path):
         watermark(INPUT,OUTPUT,folder_path+i,POSITION)
         OUTPUT = "output/"
     
-
-watermark_a_folder('logos/')
