@@ -55,27 +55,27 @@ def main():
     if args['-l' and '-p' and '-o' ]:
         logo = str(args['<input_file>'])
         position = str(args['<position>'])
-        output = str(args['<output_file>'])
-        output = "output/"+output+".png"
+        output_name = str(args['<output_file>'])
+        OUTPUT = OUTPUT+output_name+".png"
 
         if args['-t']:
             text = str(args['<text>'])
-            watermark(INPUT, output, logo, position, text, color=COLOR, text_size=TEXT_SIZE, text_position=TEXT_ALIGN_WATERMARK)
+            watermark(INPUT, OUTPUT, logo, position, text, color=COLOR, text_size=TEXT_SIZE, text_position=TEXT_ALIGN_WATERMARK)
         else:
-            watermark(INPUT, output, logo, position)
+            watermark(INPUT, OUTPUT, logo, position)
 
 
     elif args['-i' and '-T' and '-o']:
         image = str(args['<input_file>'])
         text = str(args['<text>'])
-        output = str(args['<output_file>'])
-        output = "output/"+output+".png"
+        output_name = str(args['<output_file>'])
+        OUTPUT = OUTPUT+output_name+".png"
 
         if args['-p']:
             position = str(args['<position>'])
-            watermark_with_text(image, output, text, position, color=COLOR, text_size=TEXT_SIZE)
+            watermark_with_text(image, OUTPUT, text, position, color=COLOR, text_size=TEXT_SIZE)
         else:
-            watermark_with_text(image, output, text, text_position=TEXT_POSITION, color=COLOR, text_size=TEXT_SIZE)
+            watermark_with_text(image, OUTPUT, text, text_position=TEXT_POSITION, color=COLOR, text_size=TEXT_SIZE)
 
 
 if __name__ == '__main__':
